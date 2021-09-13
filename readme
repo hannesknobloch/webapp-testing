@@ -1,0 +1,2 @@
+run the script with a filename to get eans as output, e.g. 
+$ python ean_read.py mysample.csv
