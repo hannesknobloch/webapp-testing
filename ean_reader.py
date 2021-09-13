@@ -1,4 +1,6 @@
 import pandas as pd
+import itertools
+import sys
 
 def read_file(file=None, filename=None, sheets=None):
     """
@@ -17,7 +19,8 @@ def read_file(file=None, filename=None, sheets=None):
                         "skip_errors":["error", "skip"]}
         found = False
         for config in itertools.product(*csv_configs.values()):
-            file.seek(0)
+            if not isinstance(file, str):
+                file.seek(0)
             if found == True:
                 break
             try:
@@ -43,3 +46,8 @@ def get_eans(df, ean_names=["ean", "eans", "gtin", "gtins"]):
             eans = eans.drop_duplicates().reset_index(drop=True)
             return eans
     return "No ean column found"
+
+if __name__ == "__main__":
+    data = read_file(filename=sys.argv[1])
+    eans = get_eans(data)
+    print(f"Product identifiers found: \n {eans}")
